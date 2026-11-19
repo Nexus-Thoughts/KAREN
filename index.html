@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>KAREN</title>
+    <!--
+      Structurally identical to reference/IRIS-PAYROLL-main/index.html.
+
+      Removed, with reasons:
+        - the Tailwind CDN script tag: the CDN build is dev-only; its inline
+          config now lives in tailwind.config.ts, value-for-value.
+        - the importmap block pointing at esm.sh: Vite resolves these from
+          node_modules; the importmap duplicated the npm dependencies.
+        - the inline style block: moved verbatim into src/index.css, which
+          also resolves IRIS's dangling /index.css link.
+
+      Preserved: class="dark" on <html> (IRIS defaults to dark), the viewport
+      meta, and #root.
+
+      Note: this comment must never contain literal "<script" or "<style"
+      text (even as prose) — Vite's dev-server HTML transform is not
+      comment-aware and will mis-parse it as a real tag, scrambling the
+      served document (meta/title get relocated below <body>, the comment
+      itself gets truncated mid-way). Found by loading the app in a browser
+      and inspecting the actual served HTML via fetch('/'), not by reading
+      this file — the on-disk version was always well-formed.
+    -->
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

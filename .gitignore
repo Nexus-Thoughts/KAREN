@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.env
+.env.local
+.transfer/
+_to_delete/
+supabase/.branches/
+supabase/.temp/
+*.log
+.DS_Store

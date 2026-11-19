@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+
+  database:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: supabase/setup-cli@v1
+        with:
+          version: latest
+      # `supabase start` requires docker, which the standard GitHub runner
+      # provides. Applies every migration in supabase/migrations/ from a
+      # clean database, then seed.sql, then the pgTAP suite — exactly what
+      # docs/15_TESTING_ACCEPTANCE_CRITERIA.md requires for RLS coverage.
+      - run: supabase start
+      - run: supabase test db
+      - run: supabase db diff --linked=false --schema public | (! grep -q .) # fail if migrations don't match a clean apply
